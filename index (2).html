@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>System</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    color: #fff;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  
+  #screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    background: #000;
+    overflow: hidden;
+  }
+  
+  /* Красная пульсация */
+  #screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,0,0,0.4) 0%, rgba(0,0,0,0.95) 70%);
+    animation: pulseRed 1s infinite;
+    z-index: 0;
+  }
+  
+  @keyframes pulseRed {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  
+  /* Сканлайны */
+  #screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,0,0,0.1) 0px,
+      rgba(255,0,0,0.1) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  /* Тряска */
+  .shake {
+    animation: shake 0.3s infinite;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-2px, 1px) rotate(-0.5deg); }
+    50% { transform: translate(2px, -1px) rotate(0.5deg); }
+    75% { transform: translate(-1px, -2px) rotate(-0.3deg); }
+  }
+  
+  .skull {
+    font-size: 80px;
+    animation: pulse 0.8s infinite;
+    filter: drop-shadow(0 0 20px #ff0000);
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ff2222;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    animation: glitch 2s infinite;
+  }
+  
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-3px, 1px); }
+    94% { transform: translate(3px, -1px); }
+    96% { transform: translate(-2px, -1px); }
+    98% { transform: translate(2px, 1px); }
+  }
+  
+  .subtitle {
+    font-size: 14px;
+    color: #ff8888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  /* Прогресс-бар "шифрования" */
+  .progress-container {
+    width: 100%;
+    height: 24px;
+    background: rgba(255, 0, 0, 0.15);
+    border: 2px solid #ff2222;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0000, #ff4444, #ff0000);
+    background-size: 200% 100%;
+    width: 0%;
+    animation: fillProgress 8s linear forwards, shimmer 1s linear infinite;
+    box-shadow: 0 0 20px #ff0000;
+  }
+  
+  @keyframes fillProgress {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  
+  @keyframes shimmer {
+    from { background-position: 0% 0; }
+    to { background-position: 200% 0; }
+  }
+  
+  .progress-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 2;
+  }
+  
+  /* Лог "взлома" */
+  .hack-log {
+    width: 100%;
+    max-height: 140px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #ff2222;
+    border-radius: 4px;
+    padding: 8px 12px;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #ff6666;
+    line-height: 1.6;
+  }
+  
+  .hack-log .line {
+    animation: logIn 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  @keyframes logIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .hack-log .ok { color: #ff2222; font-weight: 700; }
+  
+  /* Предупреждения */
+  .warning-box {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 0, 0, 0.15);
+    border: 2px solid #ff2222;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #ffaaaa;
+    line-height: 1.5;
+    animation: borderPulse 1s infinite;
+  }
+  
+  @keyframes borderPulse {
+    0%, 100% { border-color: #ff2222; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+    50% { border-color: #ff6666; box-shadow: 0 0 30px rgba(255,0,0,0.9); }
+  }
+  
+  /* Кнопка закрытия */
+  .close-btn {
+    display: none;
+    padding: 14px 32px;
+    background: linear-gradient(180deg, #00ff88, #00aa55);
+    border: none;
+    border-radius: 10px;
+    color: #001a0d;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), 0 4px 0 #006633;
+    animation: btnIn 0.5s;
+    font-family: inherit;
+  }
+  
+  @keyframes btnIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  
+  .close-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), 0 2px 0 #006633;
+  }
+  
+  /* Всплывающие "ошибки" */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: rgba(255, 0, 0, 0.9);
+    border: 2px solid #ff2222;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    z-index: 100;
+    animation: toastIn 0.3s;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  @keyframes toastIn {
+    from { opacity: 0; transform: translate(-50%, -30px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+  
+  /* Финальное "сообщение" */
+  .final-msg {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .final-msg h2 {
+    font-size: 24px;
+    color: #00ff88;
+    text-shadow: 0 0 20px #00ff88;
+  }
+  
+  .final-msg p {
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+  
+  /* Скрытие статус-бара эффект */
+  .ios-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: #ff2222;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    z-index: 200;
+    animation: slideDown 0.3s;
+  }
+  
+  @keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div id="screen">
+  <div class="content" id="main-content">
+    
+    <div class="skull">☠️</div>
+    
+    <h1>СИСТЕМА<br>ВЗЛОМАНА</h1>
+    
+    <div class="subtitle">iPhone Compromised</div>
+    
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+      <div class="progress-text" id="progress-text">Шифрование данных... 0%</div>
+    </div>
+    
+    <div class="hack-log" id="hack-log"></div>
+    
+    <div class="warning-box">
+      ⚠️ <b>ВНИМАНИЕ:</b> Ваше устройство заблокировано.<br>
+      Все данные шифруются. Не выключайте телефон.
+    </div>
+    
+  </div>
+  
+  <div class="final-msg" id="final-msg">
+    <div style="font-size: 60px;">😄</div>
+    <h2>ЭТО ШУТКА!</h2>
+    <p>
+      Ничего не взломано.<br>
+      Твой iPhone в полном порядке.<br>
+      Можешь закрыть вкладку в Safari.
+    </p>
+    <button class="close-btn" id="close-btn" onclick="closePrank()">ЗАКРЫТЬ</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ============================================================
+// === НАСТРОЙКИ ==============================================
+// ============================================================
+const DURATION = 8; // секунд до кнопки "Закрыть"
+const LOGS = [
+  'Инициализация протокола...',
+  'Обход защиты iOS... <span class="ok">OK</span>',
+  'Доступ к Keychain... <span class="ok">OK</span>',
+  'Извлечение паролей... <span class="ok">OK</span>',
+  'Доступ к фото... <span class="ok">OK</span>',
+  'Чтение SMS... <span class="ok">OK</span>',
+  'Доступ к контактам... <span class="ok">OK</span>',
+  'Копирование данных... 47%',
+  'Обход Face ID... <span class="ok">OK</span>',
+  'Установка бэкдора... <span class="ok">OK</span>',
+  'Шифрование файлов...',
+  'Передача данных на сервер...',
+  'Затирание следов... <span class="ok">OK</span>',
+  'Блокировка устройства...',
+  'Завершение...',
+];
+
+const TOASTS = [
+  'ОШИБКА: не удалось получить доступ к камере',
+  'ПРЕДУПРЕЖДЕНИЕ: обнаружена попытка блокировки',
+  'КРИТИЧЕСКАЯ ОШИБКА: система не отвечает',
+  'Данные передаются на удалённый сервер...',
+  'Face ID обойдён',
+  'Найдено 247 паролей',
+  'Загрузка... 87%',
+];
+
+// ============================================================
+// === ЛОГИКА ==================================================
+// ============================================================
+const logEl = document.getElementById('hack-log');
+const progressText = document.getElementById('progress-text');
+let elapsed = 0;
+let logIndex = 0;
+
+// Прогресс
+const progressInterval = setInterval(() => {
+  elapsed += 0.1;
+  const percent = Math.min(100, Math.round((elapsed / DURATION) * 100));
+  progressText.textContent = `Шифрование данных... ${percent}%`;
+  
+  if (elapsed >= DURATION) {
+    clearInterval(progressInterval);
+    showFinal();
+  }
+}, 100);
+
+// Логи
+const logInterval = setInterval(() => {
+  if (logIndex >= LOGS.length) return;
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.innerHTML = '> ' + LOGS[logIndex];
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+  logIndex++;
+  
+  // Ограничиваем
+  while (logEl.children.length > 10) {
+    logEl.removeChild(logEl.firstChild);
+  }
+}, 500);
+
+// Всплывающие "ошибки"
+setTimeout(() => {
+  const toastInterval = setInterval(() => {
+    if (elapsed >= DURATION) {
+      clearInterval(toastInterval);
+      return;
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = TOASTS[Math.floor(Math.random() * TOASTS.length)];
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+  }, 1800);
+}, 500);
+
+// Тряска через 3 секунды
+setTimeout(() => {
+  document.getElementById('main-content').classList.add('shake');
+}, 3000);
+
+// Вибрация (работает на некоторых устройствах)
+function vibrate(pattern) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(pattern); } catch(e) {}
+  }
+}
+
+setTimeout(() => vibrate([200, 100, 200]), 500);
+setTimeout(() => vibrate([300, 100, 300, 100, 500]), 2000);
+setTimeout(() => vibrate([500, 200, 500]), 5000);
+
+// ============================================================
+// === ФИНАЛ ==================================================
+// ============================================================
+function showFinal() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('final-msg').style.display = 'flex';
+  vibrate([100, 50, 100, 50, 200]);
+}
+
+function closePrank() {
+  // Пытаемся закрыть вкладку
+  window.close();
+  
+  // Если не получилось (Safari не даёт закрыть) — показываем инструкцию
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <div style="
+        position: fixed; inset: 0;
+        background: #000;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        text-align: center;
+        font-family: -apple-system, sans-serif;
+        font-size: 18px;
+        line-height: 1.6;
+        gap: 20px;
+      ">
+        <div style="font-size: 80px;">👋</div>
+        <div style="color: #00ff88; font-size: 24px; font-weight: 700;">Всё хорошо!</div>
+        <div style="color: #aaa;">
+          Чтобы выйти, просто закрой вкладку<br>
+          в Safari или нажми на крестик.
+        </div>
+        <div style="font-size: 14px; color: #666; margin-top: 20px;">
+          Это была шутка. Никакого вируса нет.
+        </div>
+      </div>
+    `;
+  }, 300);
+}
+
+// Блокируем контекстное меню и выделение
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// Не даём уйти со страницы случайно (но не блокируем жёстко)
+// (убрано, чтобы не бесить — можно вернуть при желании)
+
+// ============================================================
+// === ЭФФЕКТ "iOS WARNING BAR" ===============================
+// ============================================================
+setTimeout(() => {
+  const bar = document.createElement('div');
+  bar.className = 'ios-warning';
+  bar.textContent = '⚠ SYSTEM ALERT: UNAUTHORIZED ACCESS DETECTED';
+  document.body.appendChild(bar);
+}, 1500);
+
+// ============================================================
+// === ПОЛНОЭКРАННЫЙ РЕЖИМ (если поддерживается) ==============
+// ============================================================
+document.addEventListener('touchstart', () => {
+  // На iOS Safari полноэкранный режим не всегда работает
+  // Но попробуем
+  const el = document.documentElement;
+  if (el.requestFullscreen) {
+    el.requestFullscreen().catch(() => {});
+  }
+}, { once: true });
+
+</script>
+</body>
+</html>
