@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="robots" content="noindex, nofollow">
 <title>System</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -27,36 +28,34 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 16px;
     text-align: center;
     background: #000;
     overflow: hidden;
   }
   
-  /* Красная пульсация */
   #screen::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(255,0,0,0.4) 0%, rgba(0,0,0,0.95) 70%);
-    animation: pulseRed 1s infinite;
+    background: radial-gradient(circle at center, rgba(255,0,0,0.5) 0%, rgba(0,0,0,0.95) 70%);
+    animation: pulseRed 0.8s infinite;
     z-index: 0;
   }
   
   @keyframes pulseRed {
-    0%, 100% { opacity: 0.6; }
+    0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
   }
   
-  /* Сканлайны */
   #screen::after {
     content: '';
     position: absolute;
     inset: 0;
     background: repeating-linear-gradient(
       0deg,
-      rgba(255,0,0,0.1) 0px,
-      rgba(255,0,0,0.1) 2px,
+      rgba(255,0,0,0.12) 0px,
+      rgba(255,0,0,0.12) 2px,
       transparent 2px,
       transparent 4px
     );
@@ -72,58 +71,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
   }
   
-  /* Тряска */
   .shake {
-    animation: shake 0.3s infinite;
+    animation: shake 0.25s infinite;
   }
   
   @keyframes shake {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(-2px, 1px) rotate(-0.5deg); }
-    50% { transform: translate(2px, -1px) rotate(0.5deg); }
-    75% { transform: translate(-1px, -2px) rotate(-0.3deg); }
+    25% { transform: translate(-3px, 2px) rotate(-0.7deg); }
+    50% { transform: translate(3px, -2px) rotate(0.7deg); }
+    75% { transform: translate(-2px, -3px) rotate(-0.4deg); }
   }
   
   .skull {
-    font-size: 80px;
-    animation: pulse 0.8s infinite;
-    filter: drop-shadow(0 0 20px #ff0000);
+    font-size: 70px;
+    animation: pulse 0.7s infinite;
+    filter: drop-shadow(0 0 25px #ff0000);
   }
   
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.18); }
   }
   
   h1 {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     color: #ff2222;
     text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
     letter-spacing: 2px;
-    line-height: 1.2;
-    animation: glitch 2s infinite;
+    line-height: 1.15;
+    animation: glitch 1.5s infinite;
   }
   
   @keyframes glitch {
-    0%, 90%, 100% { transform: translate(0); }
-    92% { transform: translate(-3px, 1px); }
-    94% { transform: translate(3px, -1px); }
-    96% { transform: translate(-2px, -1px); }
-    98% { transform: translate(2px, 1px); }
+    0%, 88%, 100% { transform: translate(0); }
+    90% { transform: translate(-4px, 2px); }
+    92% { transform: translate(4px, -2px); }
+    94% { transform: translate(-3px, -1px); }
+    96% { transform: translate(3px, 1px); }
   }
   
   .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: #ff8888;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     text-transform: uppercase;
   }
   
-  /* Прогресс-бар "шифрования" */
   .progress-container {
     width: 100%;
     height: 24px;
@@ -159,27 +156,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #fff;
     text-shadow: 1px 1px 2px #000;
     z-index: 2;
   }
   
-  /* Лог "взлома" */
   .hack-log {
     width: 100%;
-    max-height: 140px;
+    height: 130px;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     border: 1px solid #ff2222;
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     text-align: left;
     font-family: 'Courier New', monospace;
     font-size: 10px;
     color: #ff6666;
-    line-height: 1.6;
+    line-height: 1.5;
+    position: relative;
   }
   
   .hack-log .line {
@@ -190,44 +187,42 @@
   }
   
   @keyframes logIn {
-    from { opacity: 0; transform: translateX(-10px); }
+    from { opacity: 0; transform: translateX(-15px); }
     to { opacity: 1; transform: translateX(0); }
   }
   
   .hack-log .ok { color: #ff2222; font-weight: 700; }
   
-  /* Предупреждения */
   .warning-box {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     background: rgba(255, 0, 0, 0.15);
     border: 2px solid #ff2222;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 11px;
     color: #ffaaaa;
     line-height: 1.5;
-    animation: borderPulse 1s infinite;
+    animation: borderPulse 0.8s infinite;
   }
   
   @keyframes borderPulse {
     0%, 100% { border-color: #ff2222; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
-    50% { border-color: #ff6666; box-shadow: 0 0 30px rgba(255,0,0,0.9); }
+    50% { border-color: #ff6666; box-shadow: 0 0 35px rgba(255,0,0,1); }
   }
   
-  /* Кнопка закрытия */
   .close-btn {
     display: none;
-    padding: 14px 32px;
+    padding: 14px 34px;
     background: linear-gradient(180deg, #00ff88, #00aa55);
     border: none;
     border-radius: 10px;
     color: #001a0d;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), 0 4px 0 #006633;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.7), 0 4px 0 #006633;
     animation: btnIn 0.5s;
     font-family: inherit;
   }
@@ -239,20 +234,19 @@
   
   .close-btn:active {
     transform: translateY(2px);
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), 0 2px 0 #006633;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.9), 0 2px 0 #006633;
   }
   
-  /* Всплывающие "ошибки" */
   .toast {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px 20px;
-    background: rgba(255, 0, 0, 0.9);
+    padding: 10px 18px;
+    background: rgba(255, 0, 0, 0.92);
     border: 2px solid #ff2222;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #fff;
     z-index: 100;
@@ -266,27 +260,27 @@
     to { opacity: 1; transform: translate(-50%, 0); }
   }
   
-  /* Финальное "сообщение" */
   .final-msg {
     display: none;
     flex-direction: column;
     align-items: center;
     gap: 16px;
+    position: relative;
+    z-index: 3;
   }
   
   .final-msg h2 {
-    font-size: 24px;
+    font-size: 26px;
     color: #00ff88;
-    text-shadow: 0 0 20px #00ff88;
+    text-shadow: 0 0 25px #00ff88;
   }
   
   .final-msg p {
     font-size: 14px;
-    color: #aaa;
+    color: #bbb;
     line-height: 1.6;
   }
   
-  /* Скрытие статус-бара эффект */
   .ios-warning {
     position: fixed;
     top: 0;
@@ -295,20 +289,67 @@
     padding: 8px;
     background: #ff2222;
     color: #fff;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-align: center;
     z-index: 200;
     animation: slideDown 0.3s;
+    letter-spacing: 1px;
   }
   
   @keyframes slideDown {
     from { transform: translateY(-100%); }
     to { transform: translateY(0); }
   }
+  
+  /* Экран "тапни для запуска" */
+  #tap-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  #tap-overlay .icon {
+    font-size: 60px;
+    animation: pulse 1.5s infinite;
+  }
+  
+  #tap-overlay .txt {
+    font-size: 18px;
+    color: #ff2222;
+    font-weight: 700;
+    letter-spacing: 2px;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+  }
+  
+  #tap-overlay .hint {
+    font-size: 12px;
+    color: #666;
+  }
 </style>
 </head>
 <body>
+
+<!-- Экран "тапни" -->
+<div id="tap-overlay">
+  <div class="icon">🔊</div>
+  <div class="txt">ТАПНИ ЧТОБЫ ЗАПУСТИТЬ</div>
+  <div class="hint">звук включится автоматически</div>
+</div>
+
 <div id="screen">
   <div class="content" id="main-content">
     
@@ -320,13 +361,13 @@
     
     <div class="progress-container">
       <div class="progress-bar"></div>
-      <div class="progress-text" id="progress-text">Шифрование данных... 0%</div>
+      <div class="progress-text" id="progress-text">Шифрование... 0%</div>
     </div>
     
     <div class="hack-log" id="hack-log"></div>
     
     <div class="warning-box">
-      ⚠️ <b>ВНИМАНИЕ:</b> Ваше устройство заблокировано.<br>
+      ⚠️ <b>ВНИМАНИЕ:</b> Устройство заблокировано.<br>
       Все данные шифруются. Не выключайте телефон.
     </div>
     
@@ -338,7 +379,7 @@
     <p>
       Ничего не взломано.<br>
       Твой iPhone в полном порядке.<br>
-      Можешь закрыть вкладку в Safari.
+      Можешь закрыть вкладку.
     </p>
     <button class="close-btn" id="close-btn" onclick="closePrank()">ЗАКРЫТЬ</button>
   </div>
@@ -350,7 +391,8 @@
 // ============================================================
 // === НАСТРОЙКИ ==============================================
 // ============================================================
-const DURATION = 8; // секунд до кнопки "Закрыть"
+const DURATION = 8;
+
 const LOGS = [
   'Инициализация протокола...',
   'Обход защиты iOS... <span class="ok">OK</span>',
@@ -370,14 +412,169 @@ const LOGS = [
 ];
 
 const TOASTS = [
-  'ОШИБКА: не удалось получить доступ к камере',
-  'ПРЕДУПРЕЖДЕНИЕ: обнаружена попытка блокировки',
+  'ОШИБКА: доступ к камере заблокирован',
+  'ПРЕДУПРЕЖДЕНИЕ: попытка блокировки',
   'КРИТИЧЕСКАЯ ОШИБКА: система не отвечает',
-  'Данные передаются на удалённый сервер...',
+  'Данные передаются на сервер...',
   'Face ID обойдён',
   'Найдено 247 паролей',
   'Загрузка... 87%',
 ];
+
+// ============================================================
+// === ЗВУК (Web Audio API) ===================================
+// ============================================================
+const Sound = {
+  ctx: null,
+  masterGain: null,
+  sirenOsc: null,
+  sirenGain: null,
+  sirenLFO: null,
+  sirenLFOGain: null,
+  enabled: false,
+  
+  init() {
+    if (this.ctx) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.masterGain = this.ctx.createGain();
+      this.masterGain.gain.value = 0.5;
+      this.masterGain.connect(this.ctx.destination);
+      this.enabled = true;
+    } catch(e) {
+      console.warn('Audio не поддерживается');
+    }
+  },
+  
+  resume() {
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  },
+  
+  // Сирена — воет на фоне
+  startSiren() {
+    if (!this.enabled) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.value = 600;
+    
+    lfo.type = 'sine';
+    lfo.frequency.value = 1.5; // 1.5 раз в секунду — вой
+    lfoGain.gain.value = 300;   // размах воя: 300..900 Гц
+    
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    
+    gain.gain.value = 0.08;
+    
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    
+    osc.start();
+    lfo.start();
+    
+    this.sirenOsc = osc;
+    this.sirenGain = gain;
+    this.sirenLFO = lfo;
+    this.sirenLFOGain = lfoGain;
+  },
+  
+  stopSiren() {
+    if (this.sirenOsc) {
+      try {
+        this.sirenGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+        this.sirenOsc.stop(this.ctx.currentTime + 0.35);
+        this.sirenLFO.stop(this.ctx.currentTime + 0.35);
+      } catch(e) {}
+      this.sirenOsc = null;
+    }
+  },
+  
+  // Короткий бип
+  beep(freq = 800, duration = 0.06, type = 'square', vol = 0.06) {
+    if (!this.enabled) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start();
+    osc.stop(this.ctx.currentTime + duration);
+  },
+  
+  // Низкий бум
+  boom() {
+    if (!this.enabled) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start();
+    osc.stop(this.ctx.currentTime + 0.45);
+  },
+  
+  // Глитч-шум
+  glitch() {
+    if (!this.enabled) return;
+    const bufferSize = this.ctx.sampleRate * 0.1;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    }
+    const src = this.ctx.createBufferSource();
+    src.buffer = buffer;
+    const gain = this.ctx.createGain();
+    gain.gain.value = 0.15;
+    src.connect(gain);
+    gain.connect(this.masterGain);
+    src.start();
+  },
+  
+  // Финальный смех (3 ноты вверх-вниз)
+  laugh() {
+    if (!this.enabled) return;
+    const notes = [660, 880, 660];
+    notes.forEach((freq, i) => {
+      setTimeout(() => {
+        this.beep(freq, 0.15, 'triangle', 0.15);
+      }, i * 180);
+    });
+  },
+  
+  // Звук финала
+  finalChord() {
+    if (!this.enabled) return;
+    [523, 659, 784, 1047].forEach((freq, i) => {
+      setTimeout(() => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.65);
+      }, i * 80);
+    });
+  },
+};
 
 // ============================================================
 // === ЛОГИКА ==================================================
@@ -386,80 +583,129 @@ const logEl = document.getElementById('hack-log');
 const progressText = document.getElementById('progress-text');
 let elapsed = 0;
 let logIndex = 0;
+let started = false;
 
-// Прогресс
-const progressInterval = setInterval(() => {
-  elapsed += 0.1;
-  const percent = Math.min(100, Math.round((elapsed / DURATION) * 100));
-  progressText.textContent = `Шифрование данных... ${percent}%`;
+function start() {
+  if (started) return;
+  started = true;
   
-  if (elapsed >= DURATION) {
-    clearInterval(progressInterval);
-    showFinal();
-  }
-}, 100);
-
-// Логи
-const logInterval = setInterval(() => {
-  if (logIndex >= LOGS.length) return;
-  const line = document.createElement('div');
-  line.className = 'line';
-  line.innerHTML = '> ' + LOGS[logIndex];
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
-  logIndex++;
+  // Инициализируем звук
+  Sound.init();
+  Sound.resume();
+  Sound.startSiren();
   
-  // Ограничиваем
-  while (logEl.children.length > 10) {
-    logEl.removeChild(logEl.firstChild);
-  }
-}, 500);
-
-// Всплывающие "ошибки"
-setTimeout(() => {
-  const toastInterval = setInterval(() => {
+  // Убираем overlay
+  const overlay = document.getElementById('tap-overlay');
+  overlay.style.transition = 'opacity 0.3s';
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.remove(), 300);
+  
+  // Вибрация
+  setTimeout(() => vibrate([200, 100, 200]), 200);
+  setTimeout(() => vibrate([300, 100, 300, 100, 500]), 2000);
+  setTimeout(() => vibrate([500, 200, 500]), 5000);
+  
+  // Прогресс
+  const progressInterval = setInterval(() => {
+    elapsed += 0.1;
+    const percent = Math.min(100, Math.round((elapsed / DURATION) * 100));
+    progressText.textContent = `Шифрование... ${percent}%`;
+    
     if (elapsed >= DURATION) {
-      clearInterval(toastInterval);
+      clearInterval(progressInterval);
+      showFinal();
+    }
+  }, 100);
+  
+  // Логи с бипами
+  const logInterval = setInterval(() => {
+    if (logIndex >= LOGS.length) {
+      clearInterval(logInterval);
       return;
     }
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = TOASTS[Math.floor(Math.random() * TOASTS.length)];
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
-  }, 1800);
-}, 500);
+    const line = document.createElement('div');
+    line.className = 'line';
+    line.innerHTML = '> ' + LOGS[logIndex];
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+    logIndex++;
+    
+    // Бип на каждый лог
+    Sound.beep(1200 + Math.random() * 600, 0.05, 'square', 0.05);
+    
+    while (logEl.children.length > 10) {
+      logEl.removeChild(logEl.firstChild);
+    }
+  }, 500);
+  
+  // Всплывающие ошибки + бум
+  setTimeout(() => {
+    const toastInterval = setInterval(() => {
+      if (elapsed >= DURATION) {
+        clearInterval(toastInterval);
+        return;
+      }
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = TOASTS[Math.floor(Math.random() * TOASTS.length)];
+      document.body.appendChild(toast);
+      Sound.boom();
+      setTimeout(() => toast.remove(), 2000);
+    }, 1800);
+  }, 500);
+  
+  // Периодический глитч
+  setInterval(() => {
+    if (elapsed < DURATION && Math.random() < 0.5) {
+      Sound.glitch();
+    }
+  }, 700);
+  
+  // Тряска
+  setTimeout(() => {
+    document.getElementById('main-content').classList.add('shake');
+  }, 3000);
+  
+  // Плашка iOS warning
+  setTimeout(() => {
+    const bar = document.createElement('div');
+    bar.className = 'ios-warning';
+    bar.textContent = '⚠ SYSTEM ALERT: UNAUTHORIZED ACCESS DETECTED';
+    document.body.appendChild(bar);
+  }, 1500);
+}
 
-// Тряска через 3 секунды
-setTimeout(() => {
-  document.getElementById('main-content').classList.add('shake');
-}, 3000);
-
-// Вибрация (работает на некоторых устройствах)
+// ============================================================
+// === ВИБРАЦИЯ ===============================================
+// ============================================================
 function vibrate(pattern) {
   if (navigator.vibrate) {
     try { navigator.vibrate(pattern); } catch(e) {}
   }
 }
 
-setTimeout(() => vibrate([200, 100, 200]), 500);
-setTimeout(() => vibrate([300, 100, 300, 100, 500]), 2000);
-setTimeout(() => vibrate([500, 200, 500]), 5000);
-
 // ============================================================
 // === ФИНАЛ ==================================================
 // ============================================================
 function showFinal() {
+  // Останавливаем сирену
+  Sound.stopSiren();
+  
+  // Прячем главный контент
   document.getElementById('main-content').style.display = 'none';
   document.getElementById('final-msg').style.display = 'flex';
+  
+  // Финальные звуки: смех + мажорный аккорд
+  Sound.laugh();
+  setTimeout(() => Sound.finalChord(), 600);
+  
+  // Вибрация
   vibrate([100, 50, 100, 50, 200]);
 }
 
 function closePrank() {
-  // Пытаемся закрыть вкладку
   window.close();
   
-  // Если не получилось (Safari не даёт закрыть) — показываем инструкцию
   setTimeout(() => {
     document.body.innerHTML = `
       <div style="
@@ -491,34 +737,20 @@ function closePrank() {
   }, 300);
 }
 
-// Блокируем контекстное меню и выделение
+// ============================================================
+// === ЗАПУСК =================================================
+// ============================================================
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
 
-// Не даём уйти со страницы случайно (но не блокируем жёстко)
-// (убрано, чтобы не бесить — можно вернуть при желании)
+// Запуск по тапу (нужен для звука на iOS)
+document.getElementById('tap-overlay').addEventListener('click', start);
+document.getElementById('tap-overlay').addEventListener('touchstart', start, { passive: true });
 
-// ============================================================
-// === ЭФФЕКТ "iOS WARNING BAR" ===============================
-// ============================================================
+// Фолбэк — если что-то пойдёт не так
 setTimeout(() => {
-  const bar = document.createElement('div');
-  bar.className = 'ios-warning';
-  bar.textContent = '⚠ SYSTEM ALERT: UNAUTHORIZED ACCESS DETECTED';
-  document.body.appendChild(bar);
-}, 1500);
-
-// ============================================================
-// === ПОЛНОЭКРАННЫЙ РЕЖИМ (если поддерживается) ==============
-// ============================================================
-document.addEventListener('touchstart', () => {
-  // На iOS Safari полноэкранный режим не всегда работает
-  // Но попробуем
-  const el = document.documentElement;
-  if (el.requestFullscreen) {
-    el.requestFullscreen().catch(() => {});
-  }
-}, { once: true });
+  if (!started) start();
+}, 30000);
 
 </script>
 </body>
